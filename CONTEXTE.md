@@ -56,10 +56,10 @@ compagnon-de-jardin/
 │   │   └── connection.py    ← Connexion et helpers DB
 │   ├── modules/
 │   │   ├── 01_journal/      ← Module 01 — mémoire du jardin (FAIT ✓)
-│   │   ├── 02_connaissances/← Module 02 — savoirs externes + personnels
-│   │   ├── 03_planification/← Module 03 — projections, calendrier
-│   │   ├── 04_capteurs/     ← Module 04 — données environnementales
-│   │   └── 05_assistant/    ← Module 05 — IA conversationnelle (Deepseek)
+│   │   ├── 02_connaissances/← Module 02 — savoirs externes + personnels (FAIT ✓)
+│   │   ├── 03_planification/← Module 03 — projections, calendrier (FAIT ✓)
+│   │   ├── 04_capteurs/     ← Module 04 — données environnementales (à faire)
+│   │   └── 05_assistant/    ← Module 05 — IA conversationnelle (à faire)
 │   ├── templates/           ← Templates Jinja2 (HTML, HTMX)
 │   └── static/              ← CSS, JS léger, manifest PWA
 │
@@ -129,6 +129,38 @@ Le graphe est un DAG. Aucun cycle. Chaque module peut être développé, testé 
 ## Prochaine action
 
 > **Module 04 — Capteurs** : intégration API météo Open-Meteo (gratuite, sans clé), visualisation des données, et préparation pour capteurs locaux (ESP32).
+
+---
+
+## Notes techniques pour le vibe-coding
+
+### Lancement du projet
+```bash
+cd ~/Programmation/sources/compagnon-de-jardin
+source .venv/bin/activate
+make db-init    # une seule fois (ou après modif du schéma)
+make dev        # http://localhost:8000
+```
+
+### Imports de modules numérotés
+Les dossiers de modules utilisent des underscores (`01_journal`) car Python n'accepte pas les tirets dans les noms de packages. L'import se fait via `importlib` :
+```python
+import importlib
+mod = importlib.import_module("src.modules.01_journal.routes")
+```
+
+### Templates Jinja2
+Centralisés dans `src/templating.py` (évite les imports circulaires). Import à faire depuis ce module :
+```python
+from src.templating import templates
+```
+
+### Migrations DB
+Les colonnes ajoutées après la création initiale sont gérées dans `src/db/connection.py` (fonctions `_migrate_*`). Pas de système de migration complexe.
+
+### Dépôt
+- Local : `~/Programmation/sources/compagnon-de-jardin`
+- GitHub : `git@github.com:brsjrn/compagnon-de-jardin.git`
 
 ---
 
