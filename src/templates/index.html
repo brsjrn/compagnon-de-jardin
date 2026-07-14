@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Accueil — {{ app_name }}{% endblock %}
+
+{% block content %}
+<section>
+    <h2>Bienvenue 🌿</h2>
+    <p>
+        Le <strong>Compagnon de jardin</strong> vous accompagne dans la création
+        et le suivi de votre potager nourricier.
+    </p>
+
+    <div class="modules">
+        <article>
+            <h3>📓 Journal</h3>
+            <p>Notez vos interventions, récoltes et observations.</p>
+            <small>Module 01 — Bientôt disponible</small>
+        </article>
+        <article>
+            <h3>📚 Connaissances</h3>
+            <p>Fiches variétés, parcelles, savoirs agronomiques.</p>
+            <small>Module 02 — Bientôt disponible</small>
+        </article>
+        <article>
+            <h3>📅 Planification</h3>
+            <p>Calendrier de cultures, rotations, aide au choix.</p>
+            <small>Module 03 — Bientôt disponible</small>
+        </article>
+        <article>
+            <h3>🌡️ Capteurs</h3>
+            <p>Données météo et environnementales.</p>
+            <small>Module 04 — Bientôt disponible</small>
+        </article>
+        <article>
+            <h3>🤖 Assistant</h3>
+            <p>Posez vos questions, obtenez des recommandations.</p>
+            <small>Module 05 — Bientôt disponible</small>
+        </article>
+    </div>
+
+    <p class="hint">Ce site est conçu pour fonctionner hors-ligne. Installez-le sur votre téléphone pour l'utiliser au jardin.</p>
+</section>
+{% endblock %}

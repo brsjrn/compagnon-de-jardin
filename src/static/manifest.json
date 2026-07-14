@@ -1,0 +1,10 @@
+{
+    "name": "Compagnon de jardin",
+    "short_name": "Jardin",
+    "description": "Assistant pour potager nourricier",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#f5f0e8",
+    "theme_color": "#4a7c59",
+    "icons": []
+}
