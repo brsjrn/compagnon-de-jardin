@@ -1,0 +1,50 @@
+{# Formulaire d'observation (fragment HTMX) #}
+<form id="observation-form"
+      class="form-card"
+      hx-post="/journal/observations"
+      hx-target="#observation-list"
+      hx-swap="outerHTML"
+      hx-disabled-elt="button[type=submit]">
+
+    <h4>Nouvelle observation</h4>
+
+    <div class="form-row">
+        <label>
+            Date
+            <input type="date" name="date_observation" value="{{ today }}" required>
+        </label>
+        <label>
+            Type
+            <select name="type">
+                {% for t in types %}
+                <option value="{{ t }}">{{ t | replace("_", " ") | capitalize }}</option>
+                {% endfor %}
+            </select>
+        </label>
+    </div>
+
+    <label>
+        Parcelle
+        <select name="parcelle_id">
+            <option value="">— Aucune —</option>
+            {% for p in parcelles %}
+            <option value="{{ p.id }}" {% if preselected_parcelle == p.id %}selected{% endif %}>{{ p.nom }}</option>
+            {% endfor %}
+        </select>
+    </label>
+
+    <label>
+        Description
+        <textarea name="description" rows="4" placeholder="Qu'observez-vous ? (météo, état des plants, incidents…)" required></textarea>
+    </label>
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        <button type="button" class="btn btn-ghost"
+                hx-get="/journal/liste/observations?page=1"
+                hx-target="#observation-list"
+                hx-swap="outerHTML">
+            Annuler
+        </button>
+    </div>
+</form>

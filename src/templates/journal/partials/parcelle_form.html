@@ -1,0 +1,62 @@
+{# Formulaire de parcelle (fragment HTMX) #}
+<form id="parcelle-form"
+      class="form-card"
+      hx-post="/journal/parcelles"
+      hx-target="#parcelle-list"
+      hx-swap="outerHTML"
+      hx-disabled-elt="button[type=submit]">
+
+    <h4>Nouvelle parcelle</h4>
+
+    <label>
+        Nom
+        <input type="text" name="nom" placeholder="ex: Planche 1, Carré des tomates…" required maxlength="100">
+    </label>
+
+    <div class="form-row">
+        <label>
+            Surface (m²)
+            <input type="number" name="surface_m2" step="0.1" min="0" placeholder="Facultatif">
+        </label>
+        <label>
+            Exposition
+            <select name="exposition">
+                <option value="">—</option>
+                <option value="nord">Nord</option>
+                <option value="sud">Sud</option>
+                <option value="est">Est</option>
+                <option value="ouest">Ouest</option>
+                <option value="sud-est">Sud-Est</option>
+                <option value="sud-ouest">Sud-Ouest</option>
+                <option value="mixte">Mixte</option>
+            </select>
+        </label>
+    </div>
+
+    <label>
+        Type de sol
+        <select name="type_sol">
+            <option value="">—</option>
+            <option value="argileux">Argileux</option>
+            <option value="sableux">Sableux</option>
+            <option value="limoneux">Limoneux</option>
+            <option value="amendé">Amendé</option>
+            <option value="mixte">Mixte</option>
+        </select>
+    </label>
+
+    <label>
+        Notes
+        <textarea name="notes" rows="2" placeholder="Particularités de cette parcelle…"></textarea>
+    </label>
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Créer la parcelle</button>
+        <button type="button" class="btn btn-ghost"
+                hx-get="/journal/liste/parcelles"
+                hx-target="#parcelle-list"
+                hx-swap="outerHTML">
+            Annuler
+        </button>
+    </div>
+</form>

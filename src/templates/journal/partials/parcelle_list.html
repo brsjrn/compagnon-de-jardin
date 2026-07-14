@@ -1,0 +1,48 @@
+{# Fragment HTMX : liste des parcelles #}
+<div id="parcelle-list">
+    <button class="btn btn-primary btn-add"
+            hx-get="/journal/form/parcelle"
+            hx-target="#form-area"
+            hx-swap="innerHTML">
+        ＋ Nouvelle parcelle
+    </button>
+
+    <div id="form-area"></div>
+
+    {% if parcelles %}
+        <div class="card-list">
+        {% for p in parcelles %}
+        <article class="card card-parcelle">
+            <div class="card-header">
+                <strong>{{ p.nom }}</strong>
+                {% if p.surface_m2 %}
+                <span class="card-meta">{{ p.surface_m2 }} m²</span>
+                {% endif %}
+            </div>
+            <div class="card-details">
+                {% if p.exposition %}<span>☀️ {{ p.exposition }}</span>{% endif %}
+                {% if p.type_sol %}<span>🪨 {{ p.type_sol }}</span>{% endif %}
+            </div>
+            {% if p.notes %}
+            <p class="card-body">{{ p.notes }}</p>
+            {% endif %}
+            <div class="card-footer">
+                <button class="btn-delete"
+                        hx-delete="/journal/parcelles/{{ p.id }}"
+                        hx-target="#parcelle-list"
+                        hx-swap="outerHTML"
+                        hx-confirm="Supprimer la parcelle « {{ p.nom }} » ?"
+                        title="Supprimer">
+                    🗑
+                </button>
+            </div>
+        </article>
+        {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty-state">
+            Aucune parcelle définie.<br>
+            Commencez par créer vos zones de culture.
+        </p>
+    {% endif %}
+</div>

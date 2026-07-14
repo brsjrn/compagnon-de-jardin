@@ -17,18 +17,18 @@
 - [x] Rédaction du manifeste (v1)
 - [x] Rédaction du cahier des charges (v1, généré par ChatGPT)
 - [x] Structuration du projet (arborescence, socle technique)
-- [x] Initialisation Git
-- [x] **Étape 0 — Socle technique** : environnement Python, FastAPI fonctionnel, schéma DB créé (9 tables), page d'accueil opérationnelle
+- [x] Initialisation Git + push GitHub
+- [x] **Étape 0 — Socle technique** : environnement Python, FastAPI fonctionnel, schéma DB (9 tables), page d'accueil
+- [x] **Module 01 — Journal de culture** : CRUD interventions, observations, parcelles. Interface HTMX à 3 onglets avec filtres et pagination. Testé et fonctionnel.
 
 ### En cours
-- [ ] **Module 01 — Journal de culture** (prochaine étape)
+- [ ] **Module 02 — Base de connaissances** (prochaine étape)
 
 ### À faire (priorisé)
-1. **Module 01 — Journal de culture** : saisie et consultation des interventions, récoltes, observations ← **PROCHAINE ACTION**
-2. **Module 02 — Base de connaissances** : fiches variétés, parcelles, agrégation de sources externes (Wikipedia, etc.)
-3. **Module 03 — Planification** : calendrier, rotations, aide au choix des variétés
-4. **Module 04 — Capteurs** : données météo (API open data), puis capteurs locaux
-5. **Module 05 — Assistant IA** : interface conversationnelle (Deepseek) avec contexte du jardin
+1. **Module 02 — Base de connaissances** : fiches variétés, agrégation Wikipedia, structuration des savoirs ← **PROCHAINE ACTION**
+2. **Module 03 — Planification** : calendrier, rotations, aide au choix des variétés
+3. **Module 04 — Capteurs** : données météo (API open data), puis capteurs locaux
+4. **Module 05 — Assistant IA** : interface conversationnelle (Deepseek) avec contexte du jardin
 
 ---
 
@@ -50,15 +50,16 @@ compagnon-de-jardin/
 ├── src/
 │   ├── main.py              ← Point d'entrée FastAPI
 │   ├── config.py            ← Configuration centralisée (chemins, DB, API keys via .env)
+│   ├── templating.py        ← Templates Jinja2 partagés (évite imports circulaires)
 │   ├── db/
 │   │   ├── schema.sql       ← Schéma SQLite (DDL)
 │   │   └── connection.py    ← Connexion et helpers DB
 │   ├── modules/
-│   │   ├── 01-journal/      ← Module B originel — mémoire du jardin
-│   │   ├── 02-connaissances/← Module D originel — savoirs externes + personnels
-│   │   ├── 03-planification/← Module A originel — projections, calendrier
-│   │   ├── 04-capteurs/     ← Module C originel — données environnementales
-│   │   └── 05-assistant/    ← Module E originel — IA conversationnelle (Deepseek)
+│   │   ├── 01_journal/      ← Module 01 — mémoire du jardin (FAIT ✓)
+│   │   ├── 02_connaissances/← Module 02 — savoirs externes + personnels
+│   │   ├── 03_planification/← Module 03 — projections, calendrier
+│   │   ├── 04_capteurs/     ← Module 04 — données environnementales
+│   │   └── 05_assistant/    ← Module 05 — IA conversationnelle (Deepseek)
 │   ├── templates/           ← Templates Jinja2 (HTML, HTMX)
 │   └── static/              ← CSS, JS léger, manifest PWA
 │
@@ -127,7 +128,7 @@ Le graphe est un DAG. Aucun cycle. Chaque module peut être développé, testé 
 
 ## Prochaine action
 
-> **Module 01 — Journal de culture** : créer les routes CRUD pour les interventions (`src/modules/01-journal/routes.py`), les formulaires HTML, et l'enregistrement des données dans les tables `interventions`, `observations`, `recoltes`.
+> **Module 02 — Base de connaissances** : créer les routes pour les fiches variétés, l'agrégation Wikipedia (recherche + cache local), et l'interface de consultation. Permettre de lier une variété à une intervention ou une culture.
 
 ---
 
@@ -136,7 +137,8 @@ Le graphe est un DAG. Aucun cycle. Chaque module peut être développé, testé 
 | Date | Action |
 |---|---|
 | 2026-07-14 | Création du projet. Structuration initiale. Rédaction de CONTEXTE.md. |
-| 2026-07-14 | **Étape 0 terminée.** FastAPI + Jinja2 + HTMX + SQLite opérationnels. Schéma DB créé (9 tables). Tests passent. Commit du socle. |
+| 2026-07-14 | **Étape 0 terminée.** FastAPI + Jinja2 + HTMX + SQLite opérationnels. Schéma DB créé (9 tables). |
+| 2026-07-15 | **Module 01 terminé.** CRUD interventions/observations/parcelles. Interface HTMX à 3 onglets, filtres, pagination. Dépôt migré vers ~/Programmation/sources/, poussé sur GitHub. |
 
 ---
 

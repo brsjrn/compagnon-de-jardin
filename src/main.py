@@ -7,10 +7,9 @@ from pathlib import Path
 
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
 
 from src.config import APP_NAME, APP_VERSION, DEBUG
-from src.db.connection import init_db
+from src.templating import templates
 
 # Création de l'application
 app = FastAPI(
@@ -18,12 +17,6 @@ app = FastAPI(
     version=APP_VERSION,
     description="Système hybride d'accompagnement au potager nourricier",
 )
-
-# Templates Jinja2 (SSR + HTMX)
-templates_dir: Path = Path(__file__).parent / "templates"
-templates = Jinja2Templates(directory=str(templates_dir))
-templates.env.globals["app_name"] = APP_NAME
-templates.env.globals["app_version"] = APP_VERSION
 
 # Fichiers statiques (CSS, JS, manifest PWA)
 static_dir: Path = Path(__file__).parent / "static"
@@ -56,12 +49,11 @@ def startup_event():
     print(f"🌱 {APP_NAME} v{APP_VERSION}")
     if DEBUG:
         print("⚠️  Mode DEBUG activé")
-    # La base est initialisée manuellement via `make db-init`
-    # pour éviter de la recréer à chaque démarrage
 
 
-# --- Inclusion des modules (au fur et à mesure de leur développement) ---
+# --- Modules ---
 
-# Exemple pour le module journal (plus tard) :
-# from src.modules.journal.routes import router as journal_router
-# app.include_router(journal_router, prefix="/journal", tags=["Journal"])
+import importlib
+
+journal_routes = importlib.import_module("src.modules.01_journal.routes")
+app.include_router(journal_routes.router)

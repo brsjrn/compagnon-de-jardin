@@ -1,0 +1,76 @@
+{# Fragment HTMX : liste des observations #}
+<div id="observation-list">
+    {# Filtre rapide #}
+    <form class="filters"
+          hx-get="/journal/liste/observations"
+          hx-target="#observation-list"
+          hx-trigger="change"
+          hx-include="this">
+        <select name="type_filter">
+            <option value="">Tous les types</option>
+            <option value="observation" {% if type_filter == "observation" %}selected{% endif %}>Observation</option>
+            <option value="météo" {% if type_filter == "météo" %}selected{% endif %}>Météo</option>
+            <option value="incident" {% if type_filter == "incident" %}selected{% endif %}>Incident</option>
+            <option value="photo" {% if type_filter == "photo" %}selected{% endif %}>Photo</option>
+            <option value="note_vocale" {% if type_filter == "note_vocale" %}selected{% endif %}>Note vocale</option>
+            <option value="autre" {% if type_filter == "autre" %}selected{% endif %}>Autre</option>
+        </select>
+    </form>
+
+    {# Bouton Ajouter #}
+    <button class="btn btn-primary btn-add"
+            hx-get="/journal/form/observation"
+            hx-target="#form-area"
+            hx-swap="innerHTML">
+        ＋ Nouvelle observation
+    </button>
+
+    <div id="form-area"></div>
+
+    {% if observations %}
+        <div class="card-list">
+        {% for o in observations %}
+        <article class="card card-observation">
+            <div class="card-header">
+                <span class="card-type type-obs-{{ o.type }}">👁 {{ o.type | capitalize }}</span>
+                <span class="card-date">{{ o.date_observation }}</span>
+            </div>
+            <p class="card-body">{{ o.description }}</p>
+            <div class="card-footer">
+                {% if o.parcelle_nom %}
+                <span class="card-parcelle">📍 {{ o.parcelle_nom }}</span>
+                {% endif %}
+                <button class="btn-delete"
+                        hx-delete="/journal/observations/{{ o.id }}?page={{ page }}"
+                        hx-target="#observation-list"
+                        hx-swap="outerHTML"
+                        hx-confirm="Supprimer cette observation ?"
+                        title="Supprimer">
+                    🗑
+                </button>
+            </div>
+        </article>
+        {% endfor %}
+        </div>
+
+        <div class="pagination">
+            {% if page > 1 %}
+            <button hx-get="/journal/liste/observations?page={{ page - 1 }}&type_filter={{ type_filter }}"
+                    hx-target="#observation-list"
+                    hx-swap="outerHTML"
+                    class="btn btn-small">← Précédent</button>
+            {% endif %}
+            <span class="page-info">Page {{ page }}</span>
+            {% if has_more %}
+            <button hx-get="/journal/liste/observations?page={{ page + 1 }}&type_filter={{ type_filter }}"
+                    hx-target="#observation-list"
+                    hx-swap="outerHTML"
+                    class="btn btn-small">Suivant →</button>
+            {% endif %}
+        </div>
+    {% else %}
+        <p class="empty-state">
+            Aucune observation enregistrée.
+        </p>
+    {% endif %}
+</div>

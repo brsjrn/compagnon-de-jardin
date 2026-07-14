@@ -1,0 +1,59 @@
+{# Formulaire d'intervention (fragment HTMX) #}
+<form id="intervention-form"
+      class="form-card"
+      hx-post="/journal/interventions"
+      hx-target="#intervention-list"
+      hx-swap="outerHTML"
+      hx-disabled-elt="button[type=submit]">
+
+    <h4>Nouvelle intervention</h4>
+
+    <div class="form-row">
+        <label>
+            Date
+            <input type="date" name="date_intervention" value="{{ today }}" required>
+        </label>
+        <label>
+            Durée (min)
+            <input type="number" name="duree_minutes" min="0" placeholder="Facultatif">
+        </label>
+    </div>
+
+    <label>
+        Type d'intervention
+        <select name="type" required>
+            <option value="">— Choisir —</option>
+            {% for t in types %}
+            <option value="{{ t }}">{{ t | replace("_", " ") | capitalize }}</option>
+            {% endfor %}
+        </select>
+    </label>
+
+    <label>
+        Parcelle
+        <select name="parcelle_id">
+            <option value="">— Aucune —</option>
+            {% for p in parcelles %}
+            <option value="{{ p.id }}" {% if preselected_parcelle == p.id %}selected{% endif %}>{{ p.nom }}</option>
+            {% endfor %}
+        </select>
+        {% if not parcelles %}
+        <small class="hint-text">Aucune parcelle définie. <a href="#" hx-get="/journal/form/parcelle" hx-target="#form-area" hx-swap="innerHTML">En créer une ?</a></small>
+        {% endif %}
+    </label>
+
+    <label>
+        Description
+        <textarea name="description" rows="3" placeholder="Qu'avez-vous fait ?" required></textarea>
+    </label>
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        <button type="button" class="btn btn-ghost"
+                hx-get="/journal/liste/interventions?page=1"
+                hx-target="#intervention-list"
+                hx-swap="outerHTML">
+            Annuler
+        </button>
+    </div>
+</form>

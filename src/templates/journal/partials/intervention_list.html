@@ -1,0 +1,97 @@
+{# Fragment HTMX : liste des interventions #}
+<div id="intervention-list">
+    {# Filtres rapides #}
+    <form class="filters"
+          hx-get="/journal/liste/interventions"
+          hx-target="#intervention-list"
+          hx-trigger="change"
+          hx-include="this">
+        <select name="type_filter">
+            <option value="">Tous les types</option>
+            <option value="préparation_sol" {% if type_filter == "préparation_sol" %}selected{% endif %}>Préparation du sol</option>
+            <option value="semis" {% if type_filter == "semis" %}selected{% endif %}>Semis</option>
+            <option value="plantation" {% if type_filter == "plantation" %}selected{% endif %}>Plantation</option>
+            <option value="arrosage" {% if type_filter == "arrosage" %}selected{% endif %}>Arrosage</option>
+            <option value="désherbage" {% if type_filter == "désherbage" %}selected{% endif %}>Désherbage</option>
+            <option value="paillage" {% if type_filter == "paillage" %}selected{% endif %}>Paillage</option>
+            <option value="taille" {% if type_filter == "taille" %}selected{% endif %}>Taille</option>
+            <option value="amendement" {% if type_filter == "amendement" %}selected{% endif %}>Amendement</option>
+            <option value="récolte" {% if type_filter == "récolte" %}selected{% endif %}>Récolte</option>
+            <option value="autre" {% if type_filter == "autre" %}selected{% endif %}>Autre</option>
+        </select>
+        <select name="parcelle_id">
+            <option value="0">Toutes les parcelles</option>
+            {% for p in parcelles %}
+            <option value="{{ p.id }}" {% if parcelle_filter == p.id %}selected{% endif %}>{{ p.nom }}</option>
+            {% endfor %}
+        </select>
+    </form>
+
+    {# Bouton Ajouter → charge le formulaire #}
+    <button class="btn btn-primary btn-add"
+            hx-get="/journal/form/intervention"
+            hx-target="#form-area"
+            hx-swap="innerHTML">
+        ＋ Nouvelle intervention
+    </button>
+
+    {# Zone du formulaire (vide par défaut) #}
+    <div id="form-area"></div>
+
+    {# Liste des interventions #}
+    {% if interventions %}
+        <div class="card-list">
+        {% for i in interventions %}
+        <article class="card">
+            <div class="card-header">
+                <span class="card-type type-{{ i.type }}">{{ i.type | replace("_", " ") }}</span>
+                <span class="card-date">{{ i.date_intervention }}</span>
+            </div>
+            <p class="card-body">{{ i.description }}</p>
+            <div class="card-footer">
+                {% if i.parcelle_nom %}
+                <span class="card-parcelle">📍 {{ i.parcelle_nom }}</span>
+                {% endif %}
+                {% if i.duree_minutes %}
+                <span class="card-duree">⏱ {{ i.duree_minutes }} min</span>
+                {% endif %}
+                <button class="btn-delete"
+                        hx-delete="/journal/interventions/{{ i.id }}?page={{ page }}"
+                        hx-target="#intervention-list"
+                        hx-swap="outerHTML"
+                        hx-confirm="Supprimer cette intervention ?"
+                        title="Supprimer">
+                    🗑
+                </button>
+            </div>
+        </article>
+        {% endfor %}
+        </div>
+
+        {# Pagination #}
+        <div class="pagination">
+            {% if page > 1 %}
+            <button hx-get="/journal/liste/interventions?page={{ page - 1 }}&type_filter={{ type_filter }}&parcelle_id={{ parcelle_filter }}"
+                    hx-target="#intervention-list"
+                    hx-swap="outerHTML"
+                    class="btn btn-small">
+                ← Précédent
+            </button>
+            {% endif %}
+            <span class="page-info">Page {{ page }}</span>
+            {% if has_more %}
+            <button hx-get="/journal/liste/interventions?page={{ page + 1 }}&type_filter={{ type_filter }}&parcelle_id={{ parcelle_filter }}"
+                    hx-target="#intervention-list"
+                    hx-swap="outerHTML"
+                    class="btn btn-small">
+                Suivant →
+            </button>
+            {% endif %}
+        </div>
+    {% else %}
+        <p class="empty-state">
+            Aucune intervention enregistrée.<br>
+            Cliquez sur « ＋ Nouvelle intervention » pour commencer.
+        </p>
+    {% endif %}
+</div>

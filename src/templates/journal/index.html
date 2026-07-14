@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Journal — {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="journal-page">
+    <h2>📓 Journal de culture</h2>
+
+    {# Onglets #}
+    <nav class="tabs" hx-target="#tab-content" hx-swap="innerHTML">
+        <button class="tab active"
+                hx-get="/journal/liste/interventions?page=1"
+                onclick="switchTab(this)">
+            Interventions
+        </button>
+        <button class="tab"
+                hx-get="/journal/liste/observations?page=1"
+                onclick="switchTab(this)">
+            Observations
+        </button>
+        <button class="tab"
+                hx-get="/journal/liste/parcelles"
+                onclick="switchTab(this)">
+            Parcelles
+        </button>
+    </nav>
+
+    {# Contenu de l'onglet actif #}
+    <div id="tab-content" hx-get="/journal/liste/interventions?page=1" hx-trigger="load">
+        <p class="loading">Chargement…</p>
+    </div>
+</section>
+
+<script>
+function switchTab(el) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+}
+</script>
+{% endblock %}
