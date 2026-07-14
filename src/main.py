@@ -22,6 +22,8 @@ app = FastAPI(
 # Templates Jinja2 (SSR + HTMX)
 templates_dir: Path = Path(__file__).parent / "templates"
 templates = Jinja2Templates(directory=str(templates_dir))
+templates.env.globals["app_name"] = APP_NAME
+templates.env.globals["app_version"] = APP_VERSION
 
 # Fichiers statiques (CSS, JS, manifest PWA)
 static_dir: Path = Path(__file__).parent / "static"
@@ -35,12 +37,8 @@ app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
 def index(request: Request):
     """Page d'accueil."""
     return templates.TemplateResponse(
-        "index.html",
-        {
-            "request": request,
-            "app_name": APP_NAME,
-            "app_version": APP_VERSION,
-        },
+        request=request,
+        name="index.html",
     )
 
 

@@ -18,12 +18,13 @@
 - [x] Rédaction du cahier des charges (v1, généré par ChatGPT)
 - [x] Structuration du projet (arborescence, socle technique)
 - [x] Initialisation Git
+- [x] **Étape 0 — Socle technique** : environnement Python, FastAPI fonctionnel, schéma DB créé (9 tables), page d'accueil opérationnelle
 
 ### En cours
-- [ ] Étape 0 — Socle technique (démarrage du projet)
+- [ ] **Module 01 — Journal de culture** (prochaine étape)
 
 ### À faire (priorisé)
-1. **Module 01 — Journal de culture** : saisie et consultation des interventions, récoltes, observations
+1. **Module 01 — Journal de culture** : saisie et consultation des interventions, récoltes, observations ← **PROCHAINE ACTION**
 2. **Module 02 — Base de connaissances** : fiches variétés, parcelles, agrégation de sources externes (Wikipedia, etc.)
 3. **Module 03 — Planification** : calendrier, rotations, aide au choix des variétés
 4. **Module 04 — Capteurs** : données météo (API open data), puis capteurs locaux
@@ -126,7 +127,7 @@ Le graphe est un DAG. Aucun cycle. Chaque module peut être développé, testé 
 
 ## Prochaine action
 
-> **Créer le socle technique (Étape 0) : initialiser l'environnement Python, vérifier que FastAPI démarre, créer le schéma de base, faire le premier commit.**
+> **Module 01 — Journal de culture** : créer les routes CRUD pour les interventions (`src/modules/01-journal/routes.py`), les formulaires HTML, et l'enregistrement des données dans les tables `interventions`, `observations`, `recoltes`.
 
 ---
 
@@ -135,6 +136,7 @@ Le graphe est un DAG. Aucun cycle. Chaque module peut être développé, testé 
 | Date | Action |
 |---|---|
 | 2026-07-14 | Création du projet. Structuration initiale. Rédaction de CONTEXTE.md. |
+| 2026-07-14 | **Étape 0 terminée.** FastAPI + Jinja2 + HTMX + SQLite opérationnels. Schéma DB créé (9 tables). Tests passent. Commit du socle. |
 
 ---
 
