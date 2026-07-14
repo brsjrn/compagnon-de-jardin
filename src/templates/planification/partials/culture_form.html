@@ -1,0 +1,91 @@
+{# Formulaire de planification de culture (fragment HTMX) #}
+<form class="form-card"
+      hx-post="/planification/cultures"
+      hx-target="#calendrier-view"
+      hx-swap="outerHTML"
+      hx-disabled-elt="button[type=submit]">
+
+    <h4>Planifier une culture</h4>
+
+    <div class="form-row">
+        <label>
+            Parcelle *
+            <select name="parcelle_id" required>
+                <option value="">— Choisir —</option>
+                {% for p in parcelles %}
+                <option value="{{ p.id }}" {% if preselected_parcelle == p.id %}selected{% endif %}>{{ p.nom }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>
+            Variété *
+            <select name="variete_id" required>
+                <option value="">— Choisir —</option>
+                {% for v in varietes %}
+                <option value="{{ v.id }}" {% if preselected_variete == v.id %}selected{% endif %}>
+                    {{ v.nom }}{% if v.famille %} ({{ v.famille }}){% endif %}
+                </option>
+                {% endfor %}
+            </select>
+        </label>
+    </div>
+
+    {% if not varietes %}
+    <p class="hint-text">
+        ⚠️ Aucune variété dans le catalogue.
+        <a href="/connaissances">Ajoutez des variétés</a> d'abord.
+    </p>
+    {% endif %}
+
+    <div class="form-row">
+        <label>
+            Date de semis
+            <input type="date" name="date_semis">
+        </label>
+        <label>
+            Date de plantation
+            <input type="date" name="date_plantation">
+        </label>
+    </div>
+
+    <div class="form-row">
+        <label>
+            Première récolte estimée
+            <input type="date" name="date_premiere_recolte">
+        </label>
+        <label>
+            Fin de culture (arrachage)
+            <input type="date" name="date_arrachage">
+        </label>
+    </div>
+
+    <div class="form-row">
+        <label>
+            Quantité (plants)
+            <input type="number" name="quantite_plantee" min="1" placeholder="ex: 12">
+        </label>
+        <label>
+            Statut
+            <select name="statut">
+                {% for s in statuts %}
+                <option value="{{ s }}" {% if s == 'planifié' %}selected{% endif %}>{{ s | replace('_', ' ') | capitalize }}</option>
+                {% endfor %}
+            </select>
+        </label>
+    </div>
+
+    <label>
+        Notes
+        <textarea name="notes" rows="2" placeholder="Variété, espacement, tuteurage…"></textarea>
+    </label>
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Planifier</button>
+        <button type="button" class="btn btn-ghost"
+                hx-get="/planification/calendrier"
+                hx-target="#calendrier-view"
+                hx-swap="outerHTML">
+            Annuler
+        </button>
+    </div>
+</form>

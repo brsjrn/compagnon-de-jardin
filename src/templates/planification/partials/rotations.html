@@ -1,0 +1,49 @@
+{# Vue rotations (fragment HTMX) #}
+<div id="rotations-view">
+    <p class="hint-text" style="margin-bottom: 1rem;">
+        🔄 L'historique des cultures par parcelle vous aide à planifier les rotations.
+        Évitez de replanter la même famille botanique au même endroit deux années de suite.
+    </p>
+
+    {% if parcelles %}
+        {% for p in parcelles %}
+        <div class="parcelle-plan-card">
+            <h3>📍 {{ p.nom }}</h3>
+
+            {% set cultures_p = cultures | selectattr('parcelle_id', 'eq', p.id) | list %}
+            {% if cultures_p %}
+            <table class="rotation-table">
+                <thead>
+                    <tr>
+                        <th>Année</th>
+                        <th>Culture</th>
+                        <th>Famille</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for c in cultures_p %}
+                <tr>
+                    <td>
+                        {% if c.date_semis %}{{ c.date_semis[:4] }}{% elif c.date_plantation %}{{ c.date_plantation[:4] }}{% else %}—{% endif %}
+                    </td>
+                    <td>{{ c.variete_nom }}</td>
+                    <td>
+                        <span class="famille-tag" style="background: {{ couleurs_famille.get(c.famille, couleur_defaut) }};">
+                            {{ c.famille or '?' }}
+                        </span>
+                    </td>
+                    <td><span class="badge">{{ c.statut | replace('_', ' ') }}</span></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="hint-text">Aucun historique pour cette parcelle.</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="empty-state">Aucune parcelle. Créez-en dans le Journal pour voir les rotations.</p>
+    {% endif %}
+</div>

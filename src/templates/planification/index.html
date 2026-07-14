@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Planification — {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="planification-page">
+    <h2>📅 Planification</h2>
+
+    <div class="stats-bar">
+        <span>📋 {{ nb_planifie }} culture(s) planifiée(s)</span>
+        <span>🌱 {{ nb_en_cours }} en cours</span>
+        <span>📍 {{ nb_parcelles }} parcelle(s)</span>
+    </div>
+
+    {% if nb_parcelles == 0 %}
+    <p class="hint-text">
+        ⚠️ Aucune parcelle définie.
+        <a href="/journal/liste/parcelles" hx-get="/journal/liste/parcelles" hx-target="#tab-content" hx-swap="innerHTML">
+            Créez des parcelles dans le Journal
+        </a> avant de planifier.
+    </p>
+    {% endif %}
+
+    {# Onglets #}
+    <nav class="tabs" hx-target="#plan-tab-content" hx-swap="innerHTML">
+        <button class="tab active"
+                hx-get="/planification/calendrier?annee={{ annee }}"
+                onclick="switchPlanTab(this)">
+            📆 Calendrier
+        </button>
+        <button class="tab"
+                hx-get="/planification/parcelles"
+                onclick="switchPlanTab(this)">
+            📍 Par parcelles
+        </button>
+        <button class="tab"
+                hx-get="/planification/rotations"
+                onclick="switchPlanTab(this)">
+            🔄 Rotations
+        </button>
+    </nav>
+
+    <div id="plan-tab-content" hx-get="/planification/calendrier?annee={{ annee }}" hx-trigger="load">
+        <p class="loading">Chargement…</p>
+    </div>
+</section>
+
+<script>
+function switchPlanTab(el) {
+    document.querySelectorAll('#plan-tab-content').forEach(t => {});
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+}
+</script>
+{% endblock %}

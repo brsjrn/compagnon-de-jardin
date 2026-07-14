@@ -1,0 +1,68 @@
+{# Vue planning par parcelles (fragment HTMX) #}
+<div id="parcelles-plan-view">
+    <button class="btn btn-primary btn-add"
+            hx-get="/planification/form"
+            hx-target="#form-area-parcelle-plan"
+            hx-swap="innerHTML">
+        ＋ Planifier une culture
+    </button>
+
+    <div id="form-area-parcelle-plan"></div>
+
+    {% if parcelles %}
+        {% for p in parcelles %}
+        <div class="parcelle-plan-card">
+            <h3>📍 {{ p.nom }}
+                <span class="card-meta">
+                    {% if p.surface_m2 %}{{ p.surface_m2 }} m²{% endif %}
+                    {% if p.exposition %} · {{ p.exposition }}{% endif %}
+                </span>
+            </h3>
+
+            {% set cultures_p = cultures_par_parcelle.get(p.id, []) %}
+            {% if cultures_p %}
+            <div class="parcelle-timeline">
+                {% for c in cultures_p %}
+                <div class="timeline-item statut-{{ c.statut }}">
+                    <div class="timeline-header">
+                        <strong>🌱 {{ c.variete_nom }}</strong>
+                        <span class="badge">{{ c.statut | replace('_', ' ') }}</span>
+                    </div>
+                    <div class="timeline-dates">
+                        {% if c.date_semis %}Semis : {{ c.date_semis }}{% endif %}
+                        {% if c.date_plantation %} → Plantation : {{ c.date_plantation }}{% endif %}
+                        {% if c.date_premiere_recolte %} → Récolte : {{ c.date_premiere_recolte }}{% endif %}
+                    </div>
+                    {% if c.notes %}<p class="card-body">{{ c.notes }}</p>{% endif %}
+                    <div class="card-footer">
+                        {% if c.statut == 'planifié' %}
+                        <button class="btn btn-tiny"
+                                hx-put="/planification/cultures/{{ c.id }}/statut"
+                                hx-vals='{"statut": "en_cours"}'
+                                hx-target="#parcelles-plan-view"
+                                hx-swap="outerHTML">▶ Démarrer</button>
+                        {% elif c.statut == 'en_cours' %}
+                        <button class="btn btn-tiny"
+                                hx-put="/planification/cultures/{{ c.id }}/statut"
+                                hx-vals='{"statut": "terminé"}'
+                                hx-target="#parcelles-plan-view"
+                                hx-swap="outerHTML">✓ Terminer</button>
+                        {% endif %}
+                        <button class="btn-delete"
+                                hx-delete="/planification/cultures/{{ c.id }}"
+                                hx-target="#parcelles-plan-view"
+                                hx-swap="outerHTML"
+                                hx-confirm="Supprimer ?">🗑</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="hint-text">Aucune culture planifiée sur cette parcelle.</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="empty-state">Aucune parcelle définie. Créez-en dans le Journal.</p>
+    {% endif %}
+</div>

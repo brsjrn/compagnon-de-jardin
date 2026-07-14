@@ -21,14 +21,14 @@
 - [x] **Étape 0 — Socle technique** : environnement Python, FastAPI fonctionnel, schéma DB (9 tables), page d'accueil
 - [x] **Module 01 — Journal de culture** : CRUD interventions, observations, parcelles. Interface HTMX à 3 onglets avec filtres et pagination. Testé et fonctionnel.
 - [x] **Module 02 — Base de connaissances** : recherche Wikipedia, catalogue personnel de variétés, cache local des articles. Interface avec barre de recherche, détail article, ajout au catalogue. Testé et fonctionnel.
+- [x] **Module 03 — Planification** : calendrier Gantt annuel, planification par parcelles, suivi des rotations, changement de statut (planifié→en_cours→terminé). Testé et fonctionnel.
 
 ### En cours
-- [ ] **Module 03 — Planification** (prochaine étape)
+- [ ] **Module 04 — Capteurs** (prochaine étape)
 
 ### À faire (priorisé)
-1. **Module 03 — Planification** : calendrier, rotations, aide au choix des variétés ← **PROCHAINE ACTION**
-2. **Module 04 — Capteurs** : données météo (API open data), puis capteurs locaux
-3. **Module 05 — Assistant IA** : interface conversationnelle (Deepseek) avec contexte du jardin
+1. **Module 04 — Capteurs** : données météo (API open data Open-Meteo), puis capteurs locaux ← **PROCHAINE ACTION**
+2. **Module 05 — Assistant IA** : interface conversationnelle (Deepseek) avec contexte du jardin
 
 ---
 
@@ -128,7 +128,7 @@ Le graphe est un DAG. Aucun cycle. Chaque module peut être développé, testé 
 
 ## Prochaine action
 
-> **Module 03 — Planification** : calendrier de cultures, planification des semis/plantations, rotations. S'appuie sur le journal (01) pour l'historique et les connaissances (02) pour les variétés.
+> **Module 04 — Capteurs** : intégration API météo Open-Meteo (gratuite, sans clé), visualisation des données, et préparation pour capteurs locaux (ESP32).
 
 ---
 
@@ -140,6 +140,7 @@ Le graphe est un DAG. Aucun cycle. Chaque module peut être développé, testé 
 | 2026-07-14 | **Étape 0 terminée.** FastAPI + Jinja2 + HTMX + SQLite opérationnels. Schéma DB créé (9 tables). |
 | 2026-07-15 | **Module 01 terminé.** CRUD interventions/observations/parcelles. Interface HTMX à 3 onglets, filtres, pagination. |
 | 2026-07-15 | **Module 02 terminé.** Recherche Wikipedia (API REST), cache local, catalogue de variétés, import Wikipedia→catalogue. |
+| 2026-07-15 | **Module 03 terminé.** Calendrier Gantt annuel, planification par parcelles, rotations, workflow statuts. |
 
 ---
 

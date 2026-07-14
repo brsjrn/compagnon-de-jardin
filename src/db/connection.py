@@ -29,6 +29,7 @@ def init_db() -> None:
 
         # Migrations : ajouter les colonnes manquantes si la table existait déjà
         _migrate_varietes(conn)
+        _migrate_cultures(conn)
 
         conn.commit()
         print(f"✓ Base initialisée : {DB_PATH}")
@@ -46,6 +47,18 @@ def _migrate_varietes(conn: sqlite3.Connection) -> None:
         conn.execute("ALTER TABLE varietes ADD COLUMN source TEXT DEFAULT 'personnel'")
     if "wiki_title" not in cols:
         conn.execute("ALTER TABLE varietes ADD COLUMN wiki_title TEXT")
+
+
+def _migrate_cultures(conn: sqlite3.Connection) -> None:
+    """Ajoute la colonne statut si absente (migration v0.2→v0.3)."""
+    cols = {
+        row["name"]
+        for row in conn.execute("PRAGMA table_info(cultures)").fetchall()
+    }
+    if "statut" not in cols:
+        conn.execute(
+            "ALTER TABLE cultures ADD COLUMN statut TEXT DEFAULT 'planifié'"
+        )
 
 
 def query(sql: str, params: tuple | dict | None = None) -> list[sqlite3.Row]:

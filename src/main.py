@@ -62,3 +62,7 @@ app.include_router(journal_routes.router)
 # Module 02 — Connaissances
 connaissances_routes = importlib.import_module("src.modules.02_connaissances.routes")
 app.include_router(connaissances_routes.router)
+
+# Module 03 — Planification
+planification_routes = importlib.import_module("src.modules.03_planification.routes")
+app.include_router(planification_routes.router)

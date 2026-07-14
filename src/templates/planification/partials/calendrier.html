@@ -1,0 +1,114 @@
+{# Calendrier annuel (fragment HTMX) #}
+<div id="calendrier-view">
+
+    {# Navigation années #}
+    <div class="year-nav">
+        <button class="btn btn-small"
+                hx-get="/planification/calendrier?annee={{ annee_prec }}"
+                hx-target="#calendrier-view" hx-swap="outerHTML">
+            ← {{ annee_prec }}
+        </button>
+        <strong class="year-current">{{ annee }}</strong>
+        <button class="btn btn-small"
+                hx-get="/planification/calendrier?annee={{ annee_suiv }}"
+                hx-target="#calendrier-view" hx-swap="outerHTML">
+            {{ annee_suiv }} →
+        </button>
+    </div>
+
+    {# Bouton ajouter #}
+    <button class="btn btn-primary btn-add"
+            hx-get="/planification/form"
+            hx-target="#form-area-plan"
+            hx-swap="innerHTML">
+        ＋ Planifier une culture
+    </button>
+
+    <div id="form-area-plan"></div>
+
+    {# Tableau calendrier #}
+    {% if cultures %}
+    <div class="calendrier-table-wrapper">
+    <table class="calendrier-table">
+        <thead>
+            <tr>
+                <th class="col-parcelle">Parcelle</th>
+                <th class="col-culture">Culture</th>
+                {% for m in mois %}
+                <th class="col-mois">{{ m[:3] }}.</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% set ns = namespace(current_parcelle='') %}
+            {% for c in cultures %}
+            <tr>
+                <td class="col-parcelle">
+                    {% if c.parcelle_nom != ns.current_parcelle %}
+                    <strong>{{ c.parcelle_nom }}</strong>
+                    {% set ns.current_parcelle = c.parcelle_nom %}
+                    {% endif %}
+                </td>
+                <td class="col-culture">
+                    <span class="culture-nom">{{ c.variete_nom }}</span>
+                    <span class="culture-statut statut-{{ c.statut }}">{{ c.statut | replace('_', ' ') }}</span>
+                    {% if c.date_semis %}<small>Semis: {{ c.date_semis }}</small>{% endif %}
+                    {% if c.date_plantation %}<small>Plant: {{ c.date_plantation }}</small>{% endif %}
+                    <div class="culture-actions-inline">
+                        {% if c.statut == 'planifié' %}
+                        <button class="btn btn-tiny"
+                                hx-put="/planification/cultures/{{ c.id }}/statut"
+                                hx-vals='{"statut": "en_cours"}'
+                                hx-target="#calendrier-view"
+                                hx-swap="outerHTML">▶ Démarrer</button>
+                        {% endif %}
+                        {% if c.statut == 'en_cours' %}
+                        <button class="btn btn-tiny"
+                                hx-put="/planification/cultures/{{ c.id }}/statut"
+                                hx-vals='{"statut": "terminé"}'
+                                hx-target="#calendrier-view"
+                                hx-swap="outerHTML">✓ Terminer</button>
+                        {% endif %}
+                        <button class="btn-delete"
+                                hx-delete="/planification/cultures/{{ c.id }}"
+                                hx-target="#calendrier-view"
+                                hx-swap="outerHTML"
+                                hx-confirm="Supprimer cette planification ?">🗑</button>
+                    </div>
+                </td>
+                {% for i in range(1, 13) %}
+                {% set fond = couleurs_famille.get(c.famille, couleur_defaut) if i in c.mois_actifs else 'transparent' %}
+                <td class="col-mois {% if i in c.mois_actifs %}mois-actif{% endif %}"
+                    style="background: {{ fond }};"
+                    title="{{ c.variete_nom }}{% if i in c.mois_actifs %} — {{ c.famille or '?' }}{% endif %}">
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    {% else %}
+        <p class="empty-state">
+            Aucune culture planifiée pour {{ annee }}.<br>
+            Cliquez sur « ＋ Planifier une culture » pour commencer.
+        </p>
+    {% endif %}
+
+    {# Légende #}
+    {% if cultures %}
+    <div class="legend" style="margin-top: 1rem;">
+        <strong>Familles :</strong>
+        {% set ns2 = namespace(seen=[]) %}
+        {% for c in cultures %}
+        {% if c.famille and c.famille not in ns2.seen %}
+        {% set _ = ns2.seen.append(c.famille) %}
+        <span class="legend-item">
+            <span class="legend-color" style="background:{{ couleurs_famille.get(c.famille, couleur_defaut) }};"></span>
+            {{ c.famille }}
+        </span>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>

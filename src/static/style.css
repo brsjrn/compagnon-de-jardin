@@ -635,3 +635,220 @@ nav a {
         height: 60px;
     }
 }
+
+/* ══════════════════════════════════════════════════════════
+   Module 03 — Planification
+   ══════════════════════════════════════════════════════════ */
+
+/* Navigation années */
+.year-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.year-current {
+    font-size: 1.3rem;
+    color: var(--color-green);
+}
+
+/* Tableau calendrier */
+.calendrier-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -0.5rem;
+    padding: 0 0.5rem;
+}
+
+.calendrier-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+    min-width: 700px;
+}
+
+.calendrier-table th,
+.calendrier-table td {
+    padding: 0.35rem 0.25rem;
+    border: 1px solid #e0e0e0;
+    text-align: center;
+}
+
+.calendrier-table thead th {
+    background: var(--color-green);
+    color: white;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+}
+
+.col-parcelle {
+    width: 80px;
+    text-align: left !important;
+    font-size: 0.75rem;
+}
+
+.col-culture {
+    width: 140px;
+    text-align: left !important;
+}
+
+.col-mois {
+    width: 30px;
+    min-width: 30px;
+    height: 28px;
+}
+
+.mois-actif {
+    border-radius: 2px;
+}
+
+.culture-nom {
+    display: block;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.culture-statut {
+    font-size: 0.65rem;
+    padding: 0.1rem 0.3rem;
+    border-radius: 8px;
+}
+
+.statut-planifié, .statut-planifie { background: #fff3cd; color: #664d03; }
+.statut-en_cours { background: #cfe2ff; color: #0d47a1; }
+.statut-terminé, .statut-termine { background: #d4edda; color: #2d6a4f; }
+
+.culture-actions-inline {
+    display: flex;
+    gap: 0.25rem;
+    margin-top: 0.2rem;
+}
+
+.btn-tiny {
+    padding: 0.15rem 0.4rem;
+    font-size: 0.65rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+}
+
+.btn-tiny:hover {
+    border-color: var(--color-green);
+    color: var(--color-green);
+}
+
+/* Légende */
+.legend {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--color-muted);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.legend-color {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+/* Cartes parcelles (planning) */
+.parcelle-plan-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--color-green);
+}
+
+.parcelle-plan-card h3 {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.75rem;
+}
+
+.card-meta {
+    font-size: 0.85rem;
+    color: var(--color-muted);
+    font-weight: 400;
+}
+
+.timeline-item {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    border-radius: var(--radius);
+    border: 1px solid #eee;
+}
+
+.timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.3rem;
+}
+
+.timeline-dates {
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    margin-bottom: 0.3rem;
+}
+
+/* Table rotations */
+.rotation-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+.rotation-table th {
+    text-align: left;
+    padding: 0.4rem 0.5rem;
+    border-bottom: 2px solid var(--color-green);
+    color: var(--color-green);
+}
+
+.rotation-table td {
+    padding: 0.4rem 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.famille-tag {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 10px;
+    font-size: 0.75rem;
+}
+
+/* Responsive planification */
+@media (max-width: 600px) {
+    .calendrier-table {
+        font-size: 0.7rem;
+        min-width: 600px;
+    }
+    .col-parcelle { width: 60px; }
+    .col-culture { width: 100px; }
+    .col-mois { width: 20px; min-width: 20px; }
+    .parcelle-plan-card h3 {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    .year-nav {
+        gap: 0.5rem;
+    }
+}

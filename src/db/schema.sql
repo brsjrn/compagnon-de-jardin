@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS cultures (
     date_arrachage DATE,
     quantite_plantee INTEGER, -- nombre de plants
     rendement_kg REAL,
+    statut TEXT DEFAULT 'planifié',  -- planifié, en_cours, terminé
     notes TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
