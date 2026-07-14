@@ -1,0 +1,76 @@
+{# Liste des variétés du catalogue (fragment HTMX) #}
+<div id="varietes-list">
+    {# Filtre par type #}
+    <form class="filters"
+          hx-get="/connaissances/varietes"
+          hx-target="#varietes-list"
+          hx-trigger="change">
+        <select name="type_filter">
+            <option value="">Tous les types</option>
+            {% for t in types %}
+            <option value="{{ t }}" {% if type_filter == t %}selected{% endif %}>{{ t | replace("_", " ") | capitalize }}</option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <button class="btn btn-primary btn-add"
+            hx-get="/connaissances/form/variete"
+            hx-target="#form-area-varietes"
+            hx-swap="innerHTML">
+        ＋ Nouvelle variété
+    </button>
+
+    <div id="form-area-varietes"></div>
+
+    {% if varietes %}
+        <div class="card-list">
+        {% for v in varietes %}
+        <article class="card">
+            <div class="card-header">
+                <strong>{{ v.nom }}</strong>
+                {% if v.source == "wikipedia" %}
+                <span class="badge">📖 Wikipedia</span>
+                {% endif %}
+            </div>
+            <div class="card-details">
+                {% if v.type %}<span>{{ v.type | replace("_", " ") | capitalize }}</span>{% endif %}
+                {% if v.famille %}<span>{{ v.famille | capitalize }}</span>{% endif %}
+                {% if v.nom_latin %}<span class="latin">{{ v.nom_latin }}</span>{% endif %}
+            </div>
+            {% if v.description %}
+            <p class="card-body">{{ v.description[:150] }}{% if v.description|length > 150 %}…{% endif %}</p>
+            {% endif %}
+            <div class="card-footer">
+                <button class="btn btn-small"
+                        hx-get="/connaissances/varietes/{{ v.id }}"
+                        hx-target="#tab-content-connaissances"
+                        hx-swap="innerHTML">
+                    🔍 Détail
+                </button>
+                {% if v.wiki_title %}
+                <button class="btn btn-small"
+                        hx-get="/connaissances/wiki/{{ v.wiki_title | urlencode }}"
+                        hx-target="#search-results"
+                        hx-swap="innerHTML">
+                    📖 Wikipedia
+                </button>
+                {% endif %}
+                <button class="btn-delete"
+                        hx-delete="/connaissances/varietes/{{ v.id }}"
+                        hx-target="#varietes-list"
+                        hx-swap="outerHTML"
+                        hx-confirm="Supprimer « {{ v.nom }} » du catalogue ?"
+                        title="Supprimer">
+                    🗑
+                </button>
+            </div>
+        </article>
+        {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty-state">
+            Votre catalogue est vide.<br>
+            Recherchez une plante sur Wikipedia et ajoutez-la, ou créez une fiche manuellement.
+        </p>
+    {% endif %}
+</div>

@@ -1,0 +1,44 @@
+{# Résultats de recherche Wikipedia (fragment HTMX) #}
+<div id="search-results-outer">
+    {% if error %}
+    <p class="error-message">{{ error }}</p>
+    {% elif results %}
+        <p class="result-count">{{ results|length }} résultat(s) pour « {{ query }} »</p>
+        <div class="card-list">
+        {% for r in results %}
+        <article class="card search-card">
+            <div class="card-header">
+                <strong>
+                    {% if r.source == "local" %}🏡{% else %}📖{% endif %}
+                    {{ r.title }}
+                </strong>
+                {% if r.in_catalog %}
+                <span class="badge badge-green">✓ Déjà dans votre catalogue</span>
+                {% endif %}
+            </div>
+            <p class="card-body">{{ r.snippet | safe }}</p>
+            <div class="card-footer">
+                {% if r.source == "wikipedia" %}
+                <button class="btn btn-small"
+                        hx-get="/connaissances/wiki/{{ r.title | urlencode }}"
+                        hx-target="#search-results-outer"
+                        hx-swap="outerHTML">
+                    📖 Voir le résumé
+                </button>
+                {% endif %}
+                {% if r.variete_id %}
+                <button class="btn btn-small"
+                        hx-get="/connaissances/varietes/{{ r.variete_id }}"
+                        hx-target="#tab-content-connaissances"
+                        hx-swap="innerHTML">
+                    🌱 Voir ma fiche
+                </button>
+                {% endif %}
+            </div>
+        </article>
+        {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty-state">Aucun résultat pour « {{ query }} ». Essayez un autre terme.</p>
+    {% endif %}
+</div>

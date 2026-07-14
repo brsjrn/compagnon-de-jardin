@@ -1,0 +1,60 @@
+{# Formulaire d'ajout de variété (fragment HTMX) #}
+<form class="form-card"
+      hx-post="/connaissances/varietes"
+      hx-target="#varietes-list"
+      hx-swap="outerHTML"
+      hx-disabled-elt="button[type=submit]">
+
+    <h4>Ajouter une variété</h4>
+
+    <label>
+        Nom *
+        <input type="text" name="nom" value="{{ prefill_nom }}" required maxlength="200"
+               placeholder="ex: Tomate Cœur de Bœuf">
+    </label>
+
+    <label>
+        Nom latin
+        <input type="text" name="nom_latin" value="{{ prefill_nom_latin }}"
+               placeholder="ex: Solanum lycopersicum">
+    </label>
+
+    <div class="form-row">
+        <label>
+            Type
+            <select name="type">
+                <option value="">—</option>
+                {% for t in types %}
+                <option value="{{ t }}" {% if prefill_type == t %}selected{% endif %}>{{ t | replace("_", " ") | capitalize }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>
+            Famille
+            <select name="famille">
+                <option value="">—</option>
+                {% for f in familles %}
+                <option value="{{ f }}" {% if prefill_famille == f %}selected{% endif %}>{{ f | capitalize }}</option>
+                {% endfor %}
+            </select>
+        </label>
+    </div>
+
+    <input type="hidden" name="source" value="{% if prefill_wiki_title %}wikipedia{% else %}personnel{% endif %}">
+    <input type="hidden" name="wiki_title" value="{{ prefill_wiki_title }}">
+
+    <label>
+        Notes personnelles
+        <textarea name="description" rows="3" placeholder="Vos observations, conseils de culture…">{{ prefill_description }}</textarea>
+    </label>
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Ajouter au catalogue</button>
+        <button type="button" class="btn btn-ghost"
+                hx-get="/connaissances/varietes"
+                hx-target="#varietes-list"
+                hx-swap="outerHTML">
+            Annuler
+        </button>
+    </div>
+</form>

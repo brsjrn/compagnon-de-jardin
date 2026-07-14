@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Connaissances — {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="connaissances-page">
+    <h2>📚 Base de connaissances</h2>
+
+    {# Stats rapides #}
+    <div class="stats-bar">
+        <span>🌱 {{ nb_varietes }} variété(s)</span>
+        <span>📍 {{ nb_parcelles }} parcelle(s)</span>
+        <span>💾 {{ nb_wiki_cache }} article(s) Wikipedia en cache</span>
+    </div>
+
+    {# Barre de recherche Wikipedia #}
+    <form class="search-bar"
+          hx-get="/connaissances/recherche"
+          hx-target="#search-results"
+          hx-trigger="submit">
+        <input type="search"
+               name="q"
+               placeholder="Rechercher une plante sur Wikipedia… (ex: tomate, courgette, basilic)"
+               autofocus
+               minlength="2">
+        <button type="submit" class="btn btn-primary">🔍 Rechercher</button>
+    </form>
+
+    <div id="search-results" class="search-results-container">
+        <p class="hint-text">Commencez par rechercher une plante ci-dessus, ou consultez votre catalogue.</p>
+    </div>
+
+    {# Onglets catalogue / recherche #}
+    <nav class="tabs" style="margin-top: 2rem;">
+        <button class="tab active"
+                hx-get="/connaissances/varietes"
+                hx-target="#tab-content-connaissances"
+                onclick="switchTab2(this)">
+            🌱 Mes variétés
+        </button>
+    </nav>
+
+    <div id="tab-content-connaissances"
+         hx-get="/connaissances/varietes"
+         hx-trigger="load">
+        <p class="loading">Chargement…</p>
+    </div>
+</section>
+
+<script>
+function switchTab2(el) {
+    document.querySelectorAll('#tab-content-connaissances').forEach(t => {});
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+}
+</script>
+{% endblock %}

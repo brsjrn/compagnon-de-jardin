@@ -1,0 +1,53 @@
+{# Détail Wikipedia (fragment HTMX) #}
+<div id="search-results-outer">
+    <button class="btn btn-small"
+            hx-get="/connaissances/recherche?q={{ article.title | urlencode }}"
+            hx-target="#search-results-outer"
+            hx-swap="outerHTML"
+            style="margin-bottom: 0.75rem;">
+        ← Retour aux résultats
+    </button>
+
+    <article class="wiki-detail">
+        <div class="wiki-header">
+            <h3>
+                {% if article.thumbnail_url %}
+                <img src="{{ article.thumbnail_url }}" alt="" class="wiki-thumb">
+                {% endif %}
+                {{ article.title }}
+            </h3>
+            {% if article.from_cache %}
+            <small class="badge">💾 En cache local</small>
+            {% endif %}
+        </div>
+
+        <div class="wiki-extract">
+            {% if article.extract_html %}
+                {{ article.extract_html | safe }}
+            {% else %}
+                <p>{{ article.extract }}</p>
+            {% endif %}
+        </div>
+
+        <div class="wiki-actions">
+            {% if article.page_url %}
+            <a href="{{ article.page_url }}" target="_blank" rel="noopener" class="btn btn-small">
+                🌐 Lire sur Wikipedia
+            </a>
+            {% endif %}
+
+            {% if not variete_id %}
+            <button class="btn btn-primary btn-small"
+                    hx-get="/connaissances/form/variete?nom={{ article.title | urlencode }}&wiki_title={{ article.title | urlencode }}"
+                    hx-target="#form-area-wiki"
+                    hx-swap="innerHTML">
+                ＋ Ajouter à mon catalogue
+            </button>
+            {% else %}
+            <span class="badge badge-green">✓ Dans votre catalogue</span>
+            {% endif %}
+        </div>
+
+        <div id="form-area-wiki"></div>
+    </article>
+</div>

@@ -21,6 +21,8 @@ CREATE TABLE IF NOT EXISTS varietes (
     type TEXT,                -- légume, fruit, aromatique, fleur, engrais_vert
     famille TEXT,             -- solanacées, cucurbitacées, fabacées, etc.
     description TEXT,
+    source TEXT DEFAULT 'personnel',   -- wikipedia, personnel, autre
+    wiki_title TEXT,                   -- titre de l'article Wikipedia associé
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -104,9 +106,23 @@ CREATE TABLE IF NOT EXISTS capteurs_data (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Cache Wikipedia (pour éviter les appels API répétés)
+CREATE TABLE IF NOT EXISTS wiki_cache (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL UNIQUE,
+    lang TEXT NOT NULL DEFAULT 'fr',
+    extract TEXT,
+    extract_html TEXT,
+    thumbnail_url TEXT,
+    page_url TEXT,
+    raw_json TEXT,
+    fetched_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Index pour les requêtes fréquentes
 CREATE INDEX IF NOT EXISTS idx_interventions_date ON interventions(date_intervention);
 CREATE INDEX IF NOT EXISTS idx_observations_date ON observations(date_observation);
 CREATE INDEX IF NOT EXISTS idx_cultures_parcelle ON cultures(parcelle_id);
 CREATE INDEX IF NOT EXISTS idx_recoltes_date ON recoltes(date_recolte);
 CREATE INDEX IF NOT EXISTS idx_meteo_date ON meteo(date);
+CREATE INDEX IF NOT EXISTS idx_wiki_cache_title ON wiki_cache(title);

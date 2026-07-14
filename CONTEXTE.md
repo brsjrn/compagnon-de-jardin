@@ -20,15 +20,15 @@
 - [x] Initialisation Git + push GitHub
 - [x] **Étape 0 — Socle technique** : environnement Python, FastAPI fonctionnel, schéma DB (9 tables), page d'accueil
 - [x] **Module 01 — Journal de culture** : CRUD interventions, observations, parcelles. Interface HTMX à 3 onglets avec filtres et pagination. Testé et fonctionnel.
+- [x] **Module 02 — Base de connaissances** : recherche Wikipedia, catalogue personnel de variétés, cache local des articles. Interface avec barre de recherche, détail article, ajout au catalogue. Testé et fonctionnel.
 
 ### En cours
-- [ ] **Module 02 — Base de connaissances** (prochaine étape)
+- [ ] **Module 03 — Planification** (prochaine étape)
 
 ### À faire (priorisé)
-1. **Module 02 — Base de connaissances** : fiches variétés, agrégation Wikipedia, structuration des savoirs ← **PROCHAINE ACTION**
-2. **Module 03 — Planification** : calendrier, rotations, aide au choix des variétés
-3. **Module 04 — Capteurs** : données météo (API open data), puis capteurs locaux
-4. **Module 05 — Assistant IA** : interface conversationnelle (Deepseek) avec contexte du jardin
+1. **Module 03 — Planification** : calendrier, rotations, aide au choix des variétés ← **PROCHAINE ACTION**
+2. **Module 04 — Capteurs** : données météo (API open data), puis capteurs locaux
+3. **Module 05 — Assistant IA** : interface conversationnelle (Deepseek) avec contexte du jardin
 
 ---
 
@@ -128,7 +128,7 @@ Le graphe est un DAG. Aucun cycle. Chaque module peut être développé, testé 
 
 ## Prochaine action
 
-> **Module 02 — Base de connaissances** : créer les routes pour les fiches variétés, l'agrégation Wikipedia (recherche + cache local), et l'interface de consultation. Permettre de lier une variété à une intervention ou une culture.
+> **Module 03 — Planification** : calendrier de cultures, planification des semis/plantations, rotations. S'appuie sur le journal (01) pour l'historique et les connaissances (02) pour les variétés.
 
 ---
 
@@ -138,7 +138,8 @@ Le graphe est un DAG. Aucun cycle. Chaque module peut être développé, testé 
 |---|---|
 | 2026-07-14 | Création du projet. Structuration initiale. Rédaction de CONTEXTE.md. |
 | 2026-07-14 | **Étape 0 terminée.** FastAPI + Jinja2 + HTMX + SQLite opérationnels. Schéma DB créé (9 tables). |
-| 2026-07-15 | **Module 01 terminé.** CRUD interventions/observations/parcelles. Interface HTMX à 3 onglets, filtres, pagination. Dépôt migré vers ~/Programmation/sources/, poussé sur GitHub. |
+| 2026-07-15 | **Module 01 terminé.** CRUD interventions/observations/parcelles. Interface HTMX à 3 onglets, filtres, pagination. |
+| 2026-07-15 | **Module 02 terminé.** Recherche Wikipedia (API REST), cache local, catalogue de variétés, import Wikipedia→catalogue. |
 
 ---
 

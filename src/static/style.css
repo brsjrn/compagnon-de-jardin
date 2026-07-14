@@ -479,4 +479,159 @@ nav a {
     .filters select {
         width: 100%;
     }
+    nav a {
+        margin-left: 0.5rem;
+        font-size: 0.85rem;
+    }
+    .stats-bar {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+}
+
+/* ══════════════════════════════════════════════════════════
+   Module 02 — Connaissances
+   ══════════════════════════════════════════════════════════ */
+
+/* Barre de recherche */
+.search-bar {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.search-bar input[type="search"] {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 2px solid #ddd;
+    border-radius: var(--radius);
+    font-size: 1.05rem;
+    font-family: inherit;
+}
+
+.search-bar input[type="search"]:focus {
+    outline: none;
+    border-color: var(--color-green);
+    box-shadow: 0 0 0 3px rgba(74, 124, 89, 0.1);
+}
+
+/* Stats */
+.stats-bar {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding: 0.75rem 1rem;
+    background: white;
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    color: var(--color-muted);
+    box-shadow: var(--shadow);
+}
+
+/* Badges */
+.badge {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    background: #eaecee;
+    color: #5d6d7e;
+}
+
+.badge-green {
+    background: #d4edda;
+    color: #2d6a4f;
+}
+
+/* Résultats de recherche */
+.search-results-container {
+    margin-bottom: 1.5rem;
+}
+
+.result-count {
+    font-size: 0.9rem;
+    color: var(--color-muted);
+    margin-bottom: 0.5rem;
+}
+
+.error-message {
+    color: #842029;
+    background: #f8d7da;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius);
+}
+
+/* Détail Wikipedia */
+.wiki-detail {
+    background: white;
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    box-shadow: var(--shadow);
+}
+
+.wiki-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.wiki-thumb {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: var(--radius);
+    float: left;
+    margin: 0 0.75rem 0.5rem 0;
+}
+
+.wiki-extract {
+    line-height: 1.7;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+}
+
+.wiki-extract p {
+    margin-bottom: 0.75rem;
+}
+
+.wiki-extract a {
+    color: var(--color-green);
+}
+
+.wiki-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #eee;
+}
+
+/* Nom latin en italique */
+.latin {
+    font-style: italic;
+    color: var(--color-muted);
+}
+
+/* Carte de résultat de recherche */
+.search-card {
+    cursor: default;
+}
+
+/* Snippet Wikipedia */
+.searchmatch {
+    font-weight: 600;
+    color: var(--color-green);
+}
+
+/* Ajustements mobiles */
+@media (max-width: 600px) {
+    .search-bar {
+        flex-direction: column;
+    }
+    .wiki-thumb {
+        width: 60px;
+        height: 60px;
+    }
 }

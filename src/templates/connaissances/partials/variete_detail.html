@@ -1,0 +1,65 @@
+{# Détail d'une variété (fragment HTMX) #}
+<div id="variete-detail">
+    <button class="btn btn-small"
+            hx-get="/connaissances/varietes{% if variete.type %}?type_filter={{ variete.type }}{% endif %}"
+            hx-target="#tab-content-connaissances"
+            style="margin-bottom: 1rem;">
+        ← Retour au catalogue
+    </button>
+
+    <article class="wiki-detail">
+        <h3>🌱 {{ variete.nom }}</h3>
+
+        <div class="card-details" style="margin-bottom: 1rem;">
+            {% if variete.nom_latin %}<span class="latin">{{ variete.nom_latin }}</span>{% endif %}
+            {% if variete.type %}<span>{{ variete.type | replace("_", " ") | capitalize }}</span>{% endif %}
+            {% if variete.famille %}<span>{{ variete.famille | capitalize }}</span>{% endif %}
+            {% if variete.source %}<span class="badge">{{ variete.source | capitalize }}</span>{% endif %}
+        </div>
+
+        {% if variete.description %}
+        <p style="white-space: pre-wrap;">{{ variete.description }}</p>
+        {% else %}
+        <p class="empty-state">Aucune description pour cette variété.</p>
+        {% endif %}
+
+        <div class="wiki-actions">
+            {% if variete.wiki_title %}
+            <a href="https://fr.wikipedia.org/wiki/{{ variete.wiki_title | urlencode }}"
+               target="_blank" rel="noopener" class="btn btn-small">
+                🌐 Voir sur Wikipedia
+            </a>
+            <button class="btn btn-small"
+                    hx-get="/connaissances/wiki/{{ variete.wiki_title | urlencode }}"
+                    hx-target="#variete-detail-wiki"
+                    hx-swap="innerHTML">
+                📖 Résumé Wikipedia (cache)
+            </button>
+            {% endif %}
+        </div>
+
+        <div id="variete-detail-wiki"></div>
+
+        {# Cultures associées #}
+        {% if cultures %}
+        <h4 style="margin-top: 1.5rem;">📅 Historique de culture</h4>
+        <div class="card-list" style="margin-top: 0.5rem;">
+        {% for c in cultures %}
+        <article class="card">
+            <div class="card-header">
+                <strong>{{ c.parcelle_nom or 'Parcelle inconnue' }}</strong>
+                <span class="card-date">
+                    {% if c.date_semis %}Semis {{ c.date_semis }}{% endif %}
+                    {% if c.date_plantation %} → Plantation {{ c.date_plantation }}{% endif %}
+                </span>
+            </div>
+            {% if c.notes %}<p class="card-body">{{ c.notes }}</p>{% endif %}
+            {% if c.rendement_kg %}
+            <div class="card-footer">📊 Rendement : {{ c.rendement_kg }} kg</div>
+            {% endif %}
+        </article>
+        {% endfor %}
+        </div>
+        {% endif %}
+    </article>
+</div>

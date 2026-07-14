@@ -55,5 +55,10 @@ def startup_event():
 
 import importlib
 
+# Module 01 — Journal
 journal_routes = importlib.import_module("src.modules.01_journal.routes")
 app.include_router(journal_routes.router)
+
+# Module 02 — Connaissances
+connaissances_routes = importlib.import_module("src.modules.02_connaissances.routes")
+app.include_router(connaissances_routes.router)

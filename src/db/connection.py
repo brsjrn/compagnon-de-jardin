@@ -21,15 +21,31 @@ def get_connection() -> sqlite3.Connection:
 
 
 def init_db() -> None:
-    """Initialise la base de données en exécutant le schéma SQL."""
+    """Initialise la base de données en exécutant le schéma SQL + migrations."""
     schema = SCHEMA_PATH.read_text(encoding="utf-8")
     conn = get_connection()
     try:
         conn.executescript(schema)
+
+        # Migrations : ajouter les colonnes manquantes si la table existait déjà
+        _migrate_varietes(conn)
+
         conn.commit()
         print(f"✓ Base initialisée : {DB_PATH}")
     finally:
         conn.close()
+
+
+def _migrate_varietes(conn: sqlite3.Connection) -> None:
+    """Ajoute les colonnes source et wiki_title si absentes (migration v0.1→v0.2)."""
+    cols = {
+        row["name"]
+        for row in conn.execute("PRAGMA table_info(varietes)").fetchall()
+    }
+    if "source" not in cols:
+        conn.execute("ALTER TABLE varietes ADD COLUMN source TEXT DEFAULT 'personnel'")
+    if "wiki_title" not in cols:
+        conn.execute("ALTER TABLE varietes ADD COLUMN wiki_title TEXT")
 
 
 def query(sql: str, params: tuple | dict | None = None) -> list[sqlite3.Row]:
